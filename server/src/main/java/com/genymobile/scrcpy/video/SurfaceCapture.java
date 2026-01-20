@@ -26,6 +26,15 @@ public abstract class SurfaceCapture {
     }
 
     /**
+     * Request a sync frame from the listener if it supports this operation.
+     */
+    protected void requestSyncFrameFromListener() {
+        if (listener instanceof CaptureReset) {
+            ((CaptureReset) listener).requestSyncFrame();
+        }
+    }
+
+    /**
      * Called once before the first capture starts.
      */
     public final void init(CaptureListener listener) throws ConfigurationException, IOException {
@@ -93,4 +102,12 @@ public abstract class SurfaceCapture {
      * The capture implementation is free to ignore the request and do nothing.
      */
     public abstract void requestInvalidate();
+
+    /**
+     * Request an immediate sync frame (IDR) from the encoder.
+     * This is a lightweight operation that doesn't restart the encoder.
+     * <p>
+     * The capture implementation is free to ignore the request and do nothing.
+     */
+    public abstract void requestSyncFrame();
 }

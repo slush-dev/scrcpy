@@ -266,4 +266,9 @@ public class NewDisplayCapture extends SurfaceCapture {
     public void requestInvalidate() {
         invalidate();
     }
+
+    @Override
+    public void requestSyncFrame() {
+        requestSyncFrameFromListener();
+    }
 }

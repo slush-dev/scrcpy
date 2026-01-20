@@ -216,4 +216,9 @@ public class ScreenCapture extends SurfaceCapture {
     public void requestInvalidate() {
         invalidate();
     }
+
+    @Override
+    public void requestSyncFrame() {
+        requestSyncFrameFromListener();
+    }
 }

@@ -331,6 +331,9 @@ public class Controller implements AsyncProcessor, VirtualDisplayListener {
             case ControlMessage.TYPE_RESET_VIDEO:
                 resetVideo();
                 break;
+            case ControlMessage.TYPE_REQUEST_SYNC_FRAME:
+                requestSyncFrame();
+                break;
             default:
                 // do nothing
         }
@@ -752,6 +755,13 @@ public class Controller implements AsyncProcessor, VirtualDisplayListener {
         if (surfaceCapture != null) {
             Ln.i("Video capture reset");
             surfaceCapture.requestInvalidate();
+        }
+    }
+
+    private void requestSyncFrame() {
+        if (surfaceCapture != null) {
+            Ln.d("Sync frame requested via control");
+            surfaceCapture.requestSyncFrame();
         }
     }
 }

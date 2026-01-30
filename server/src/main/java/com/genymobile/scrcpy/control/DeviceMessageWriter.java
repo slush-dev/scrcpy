@@ -39,6 +39,9 @@ public class DeviceMessageWriter {
                 dos.writeShort(data.length);
                 dos.write(data);
                 break;
+            case DeviceMessage.TYPE_FLAG_SECURE:
+                dos.writeBoolean(msg.isFlagSecureActive());
+                break;
             default:
                 throw new ControlProtocolException("Unknown event type: " + type);
         }

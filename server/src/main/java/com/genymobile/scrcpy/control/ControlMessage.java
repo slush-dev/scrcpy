@@ -26,6 +26,7 @@ public final class ControlMessage {
     public static final int TYPE_START_APP = 16;
     public static final int TYPE_RESET_VIDEO = 17;
     public static final int TYPE_REQUEST_SYNC_FRAME = 18; // Lightweight IDR request (PhoneVault extension)
+    public static final int TYPE_CHECK_FLAG_SECURE = 19;  // Request FLAG_SECURE check (PhoneVault extension)
 
     public static final long SEQUENCE_INVALID = 0;
 

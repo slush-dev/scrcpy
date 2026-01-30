@@ -80,6 +80,7 @@ public class Controller implements AsyncProcessor, VirtualDisplayListener {
     private final ControlChannel controlChannel;
     private final CleanUp cleanUp;
     private final DeviceMessageSender sender;
+    private final FlagSecureMonitor flagSecureMonitor;
     private final boolean clipboardAutosync;
     private final boolean powerOn;
 
@@ -108,6 +109,9 @@ public class Controller implements AsyncProcessor, VirtualDisplayListener {
         this.powerOn = options.getPowerOn();
         initPointers();
         sender = new DeviceMessageSender(controlChannel);
+
+        // FlagSecureMonitor is request-based, always available
+        flagSecureMonitor = new FlagSecureMonitor(sender);
 
         supportsInputEvents = Device.supportsInputEvents(displayId);
         if (!supportsInputEvents) {
@@ -333,6 +337,9 @@ public class Controller implements AsyncProcessor, VirtualDisplayListener {
                 break;
             case ControlMessage.TYPE_REQUEST_SYNC_FRAME:
                 requestSyncFrame();
+                break;
+            case ControlMessage.TYPE_CHECK_FLAG_SECURE:
+                checkFlagSecureAsync();
                 break;
             default:
                 // do nothing
@@ -651,6 +658,11 @@ public class Controller implements AsyncProcessor, VirtualDisplayListener {
 
         // Listing and selecting the app may take a lot of time
         startAppExecutor.submit(() -> startApp(name));
+    }
+
+    private void checkFlagSecureAsync() {
+        // Run FLAG_SECURE check asynchronously to avoid blocking control message handling
+        EXECUTOR.submit(() -> flagSecureMonitor.check());
     }
 
     private void startApp(String name) {

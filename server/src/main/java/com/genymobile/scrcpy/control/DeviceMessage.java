@@ -5,12 +5,14 @@ public final class DeviceMessage {
     public static final int TYPE_CLIPBOARD = 0;
     public static final int TYPE_ACK_CLIPBOARD = 1;
     public static final int TYPE_UHID_OUTPUT = 2;
+    public static final int TYPE_FLAG_SECURE = 3;
 
     private int type;
     private String text;
     private long sequence;
     private int id;
     private byte[] data;
+    private boolean flagSecureActive;
 
     private DeviceMessage() {
     }
@@ -37,6 +39,13 @@ public final class DeviceMessage {
         return event;
     }
 
+    public static DeviceMessage createFlagSecure(boolean active) {
+        DeviceMessage msg = new DeviceMessage();
+        msg.type = TYPE_FLAG_SECURE;
+        msg.flagSecureActive = active;
+        return msg;
+    }
+
     public int getType() {
         return type;
     }
@@ -55,5 +64,9 @@ public final class DeviceMessage {
 
     public byte[] getData() {
         return data;
+    }
+
+    public boolean isFlagSecureActive() {
+        return flagSecureActive;
     }
 }
